@@ -73,7 +73,7 @@ class Autocomplete {
   
     for (let i = 0; i < optionCollection.length; i++) {
       const option = optionCollection[i];
-      if (option.textContent.includes(text)) {
+      if (option.textContent.toLowerCase().includes(text.toLowerCase())) {
         matchArr.push({
           text: option.textContent,
           value: option.value
