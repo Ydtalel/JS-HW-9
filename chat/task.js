@@ -43,12 +43,7 @@ function startidleTimer() {
   idleTimer = setInterval(() => {
     if (isChatFocused) {
       const botQuestion = sarcasticPhrases[Math.floor(Math.random() * sarcasticPhrases.length)];
-      messages.innerHTML += `
-        <div class="message">
-          <div class="message__time">${getCurrentTime()}</div>
-          <div class="message__text">${botQuestion}</div>
-        </div>
-      `;
+      addBotMessage(botQuestion);
     }
   }, 30000);
 }
@@ -60,8 +55,23 @@ function stopidleTimer() {
   }
 }
 
+function addBotMessage(message) {
+  messages.innerHTML += `
+    <div class="message">
+      <div class="message__time">${getCurrentTime()}</div>
+      <div class="message__text">${message}</div>
+    </div>
+  `;
+  scrollChatToBottom();
+}
+
+function scrollChatToBottom() {
+  const lastMessage = messages.lastElementChild;
+  lastMessage.scrollIntoView({ behavior: 'smooth' });
+}
+
 messageText.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && messageText.value) {
+  if (e.key === 'Enter' && messageText.value.trim()) {
     let clientMessage = messageText.value;
     let botMessage = sarcasticPhrases[Math.floor(Math.random() * sarcasticPhrases.length)];
     messages.innerHTML += `
@@ -70,12 +80,7 @@ messageText.addEventListener('keydown', (e) => {
         <div class="message__text">${clientMessage}</div>
       </div>
     `;
-    messages.innerHTML += `
-    <div class="message">
-      <div class="message__time">${getCurrentTime()}</div>
-      <div class="message__text">${botMessage}</div>
-    </div>
-    `;
+    addBotMessage(botMessage);
     messageText.value = '';
   }
 });
